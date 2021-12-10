@@ -8,8 +8,14 @@ router.get('/',(req,res,next)=>{
 });
 
 router.post('/',(req,res,next)=>{
+    const order_info = {
+        product_name:req.body.product_name,
+        product_price:req.body.product_price
+    };
+    onsole.log("Order created:",order_info);
     res.status(201).json({
-        message:"Handling POST requests"
+        message:"Handling POST requests",
+        order_created:order_info
     });
 });
 
