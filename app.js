@@ -13,8 +13,7 @@ const products = require('./api/routes/products');
 const order = require('./api/routes/order');
 
 mongoose.connect(
-    'mongodb+srv://twj-api:'+process.env.MONGODB_PASSWORD+'@twj-api.c5dct.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-    {useMongoClient:true});
+    'mongodb+srv://twj-api:'+process.env.MONGODB_PASSWORD+'@twj-api.c5dct.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 
 // THESE ARE ALL MIDDLEWARES
 app.use(morgan('dev'));//console log requests details
