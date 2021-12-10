@@ -9,8 +9,8 @@ router.get('/',(req,res,next)=>{
 
 router.post('/',(req,res,next)=>{
     const order_info = {
-        product_name:req.body.product_name,
-        product_price:req.body.product_price
+        products_name:req.body.products_name,
+        products_price:req.body.products_price
     };
     onsole.log("Order created:",order_info);
     res.status(201).json({

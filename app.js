@@ -1,13 +1,20 @@
 const express = require('express');
 const app = express();
+
+//packages
+const dotenv = require('dotenv');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const product = require('./api/routes/product');
+dotenv.config();
+
+const products = require('./api/routes/products');
 const order = require('./api/routes/order');
 
-mongoose.connect('mongodb+srv://twj-api:'+process.env.MONGO_PASS+'@twj-api.c5dct.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+mongoose.connect(
+    'mongodb+srv://twj-api:'+process.env.MONGODB_PASSWORD+'@twj-api.c5dct.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    {useMongoClient:true});
 
 // THESE ARE ALL MIDDLEWARES
 app.use(morgan('dev'));//console log requests details
@@ -32,7 +39,7 @@ app.use((req,res,next)=>{
 
 
 //routes that handles requests
-app.use('/product',product);
+app.use('/products',products);
 app.use('/order',order);
 
 // if the requests arent successful,these will run

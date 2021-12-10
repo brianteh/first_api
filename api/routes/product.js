@@ -8,14 +8,14 @@ router.get('/',(req,res,next)=>{
 });
 
 router.post('/',(req,res,next)=>{
-    const product_info = {
-        product_name : req.body.product_name,
-        product_price : req.body.product_price
+    const products_info = {
+        products_name : req.body.products_name,
+        products_price : req.body.products_price
     };
-    console.log("Product created:",product_info);
+    console.log("products created:",products_info);
     res.status(201).json({
         message:"Handling POST requests",
-        product_created:product_info
+        products_created:products_info
     });
 });
 
