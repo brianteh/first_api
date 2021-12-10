@@ -1,10 +1,13 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+
 const product = require('./api/routes/product');
 const order = require('./api/routes/order');
 
+mongoose.connect('mongodb+srv://twj-api:'+process.env.MONGO_PASS+'@twj-api.c5dct.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
 
 // THESE ARE ALL MIDDLEWARES
 app.use(morgan('dev'));//console log requests details
