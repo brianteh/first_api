@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 dotenv.config();
 
 const products = require('./api/routes/products');
-const orders = require('./api/routes/orderss');
+const orders = require('./api/routes/orders');
 
 mongoose.connect(
     'mongodb+srv://twj-api:mongodb4018@twj-api.c5dct.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
