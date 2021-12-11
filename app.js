@@ -10,10 +10,12 @@ const bodyParser = require('body-parser');
 dotenv.config();
 
 const products = require('./api/routes/products');
-const order = require('./api/routes/order');
+const orders = require('./api/routes/orderss');
 
 mongoose.connect(
     'mongodb+srv://twj-api:'+process.env.MONGODB_PASSWORD+'@twj-api.c5dct.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+
+//mongoose.Promise = global.Promise; --> to fix deprecation warning
 
 // THESE ARE ALL MIDDLEWARES
 app.use(morgan('dev'));//console log requests details
@@ -39,7 +41,7 @@ app.use((req,res,next)=>{
 
 //routes that handles requests
 app.use('/products',products);
-app.use('/order',order);
+app.use('/orders',orders);
 
 // if the requests arent successful,these will run
 app.use((req,res,next)=>{
