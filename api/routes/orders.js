@@ -68,7 +68,7 @@ router.post('/:product_id',(req,res,next)=>{
         })
         .catch(err=>{
             console.log('Order failed');
-            res.status(500).json({
+            res.status(404).json({
                 message:"Product not found",
                 error:err
             });
@@ -117,7 +117,7 @@ router.patch('/:order_id',(req,res,next)=>{
         });
     })
     .catch(err=>{
-        res.status(500).json({
+        res.status(404).json({
             message:"Product not found",
             error:err
         });
