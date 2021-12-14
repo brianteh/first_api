@@ -11,7 +11,7 @@ router.get('/',(req,res,next)=>{
     Order
         .find()
         .select('-__v')
-        .populate('product')
+        .populate('product','-__v')
         .exec()
         .then((docs)=>{
             res.status(200).json({
@@ -54,6 +54,12 @@ router.post('/:product',(req,res,next)=>{
     Product.findById(req.params.product || req.body.product)
         .exec()
         .then(result=>{
+            if(!result){
+                console.log('Order failed');
+                return res.status(404).json({
+                    message:"Product not found"
+                });
+            }
             return order.save();
         })
         .then((result)=>{
@@ -69,8 +75,7 @@ router.post('/:product',(req,res,next)=>{
         })
         .catch(err=>{
             console.log('Order failed');
-            res.status(404).json({
-                message:"Product not found",
+            res.status(500).json({
                 error:err
             });
         });
@@ -83,9 +88,14 @@ router.get('/:order_id',(req,res,next)=>{
     const id = req.params.order_id;
     Order.findById(id)
         .select('-__v')
-        .populate('product')//populate('product','products_name') just selecting the name
+        .populate('product','-__v')//populate('product','products_name') just selecting the name
         .exec()
         .then(doc=>{
+            if(!doc){
+                return res.status(404).json({
+                    message:"Order not found"
+                });
+            }
             res.status(200).json({
                 _id: doc._id,
                 product: doc.product,
@@ -97,34 +107,45 @@ router.get('/:order_id',(req,res,next)=>{
                 }
             });
         })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
+            });
+        });
 });
 
 router.patch('/:order_id',(req,res,next)=>{
     const id = req.params.order_id;
     // check if product exists
     Product.findById(req.body.product)
-    .exec()
-    .then(result=>{
-        return Order.findByIdAndUpdate(id,{$set:req.body},{new:true})//Order.update({_id:id},{$set:update_info})
-        .exec();
-    })
-    .then(result=>{
-        console.log(`Order with id : {${id}} updated!`);
-        res.status(200).json({
-            message:"Order with id {"+id+"} updated!",
-            request:{
-                type: "GET",
-                url: "*/orders/"+id
+        .exec()
+        .then(result=>{
+            if(!result){
+                console.log('Order failed');
+                res.status(404).json({
+                    message:"Product not found"
+                });
+            }else{
+                Order.findByIdAndUpdate(id,{$set:req.body},{new:true})//Order.update({_id:id},{$set:update_info})
+                .exec()
+                .then((result)=>{
+                    console.log(`Order with id : {${id}} updated!`);
+                    res.status(200).json({
+                        message:"Order with id {"+id+"} updated!",
+                        request:{
+                            type: "GET",
+                            url: "*/orders/"+id
+                        }
+                    });
+                });
             }
+        })
+        .catch(err=>{
+            res.status(500).json({
+                error:err
+            });
         });
-    })
-    .catch(err=>{
-        res.status(404).json({
-            message:"Product not found",
-            error:err
-        });
-    });
-    
+        
 });
 
 router.delete('/:order_id',(req,res,next)=>{
